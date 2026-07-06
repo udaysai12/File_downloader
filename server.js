@@ -356,10 +356,8 @@ function checkDependency(bin, name) {
 // ─────────────────────────────────────────────
 // Start server
 // ─────────────────────────────────────────────
-app.listen(PORT, () => {
-  console.log(`\n🚀 Media Downloader running at http://localhost:${PORT}\n`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`\n🚀 Media Downloader running on 0.0.0.0:${PORT}\n`);
   checkDependency(YTDLP_BIN, 'yt-dlp');
   checkDependency(FFMPEG_BIN, 'ffmpeg');
-  console.log('\nDownload yt-dlp : https://github.com/yt-dlp/yt-dlp/releases');
-  console.log('Download ffmpeg  : https://ffmpeg.org/download.html\n');
 });
