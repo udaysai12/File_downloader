@@ -61,6 +61,13 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// ─────────────────────────────────────────────
+// GET /health  – Railway health check
+// ─────────────────────────────────────────────
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok', uptime: process.uptime() });
+});
+
 // Store active SSE connections
 const sseClients = new Map();
 
@@ -352,6 +359,20 @@ function checkDependency(bin, name) {
     if (code === 0) console.log(`✅ ${name} found → ${bin}`);
   });
 }
+
+// ─────────────────────────────────────────────
+// Crash protection
+// ─────────────────────────────────────────────
+process.on('uncaughtException', (err) => {
+  console.error('❌ Uncaught Exception:', err.message, err.stack);
+});
+process.on('unhandledRejection', (reason) => {
+  console.error('❌ Unhandled Rejection:', reason);
+});
+process.on('SIGTERM', () => {
+  console.log('SIGTERM received — shutting down gracefully');
+  process.exit(0);
+});
 
 // ─────────────────────────────────────────────
 // Start server
