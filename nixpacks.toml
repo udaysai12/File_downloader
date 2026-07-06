@@ -1,2 +1,11 @@
+[phases.setup]
+nixPkgs = ["nodejs_18", "npm-9_x", "python3"]
+
+[phases.install]
+cmds = [
+  "pip install -U yt-dlp",
+  "npm ci"
+]
+
 [start]
 cmd = "node server.js"

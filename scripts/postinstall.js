@@ -8,8 +8,15 @@ const https = require('https');
 const fs    = require('fs');
 const path  = require('path');
 
+// Skip on Windows — developer uses local bin/ folder
 if (process.platform === 'win32') {
   console.log('Windows detected — skipping yt-dlp download (use local bin/ folder)');
+  process.exit(0);
+}
+
+// Skip on Linux — nixpacks installs yt-dlp via pip on Railway
+if (process.platform === 'linux') {
+  console.log('Linux detected — yt-dlp installed via pip by nixpacks');
   process.exit(0);
 }
 
