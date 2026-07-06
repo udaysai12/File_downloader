@@ -38,7 +38,15 @@ function resolveBinary(name) {
 }
 
 const YTDLP_BIN  = resolveBinary('yt-dlp');
-const FFMPEG_BIN = resolveBinary('ffmpeg');
+
+// Resolve ffmpeg: prefer ffmpeg-static package, then local bin/, then PATH
+let FFMPEG_BIN;
+try {
+  FFMPEG_BIN = require('ffmpeg-static');
+  if (!FFMPEG_BIN) throw new Error('null path');
+} catch (_) {
+  FFMPEG_BIN = resolveBinary('ffmpeg');
+}
 
 console.log(`yt-dlp  → ${YTDLP_BIN}`);
 console.log(`ffmpeg  → ${FFMPEG_BIN}`);
