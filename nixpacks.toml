@@ -3,7 +3,7 @@ nixPkgs = ["nodejs_18", "npm-9_x", "python3"]
 
 [phases.install]
 cmds = [
-  "pip install -U yt-dlp",
+  "python3 -m pip install -U yt-dlp --break-system-packages",
   "npm ci"
 ]
 
