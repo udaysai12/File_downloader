@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+
+# Large binaries (yt-dlp, ffmpeg) — download separately
+bin/
+
+# Downloaded media files
+downloads/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment variables
+.env
+.env.local
+
+# OS files
+.DS_Store
+Thumbs.db

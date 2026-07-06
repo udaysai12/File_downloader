@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MediaPull — Download Any Video or Audio</title>
+  <meta name="description" content="Download videos and audio from YouTube, TikTok, Twitter, Instagram, Vimeo and 1000+ sites. Free, fast, and easy to use." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Animated background -->
+  <div class="bg-orbs" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="logo">
+      <span class="logo-icon"><i class="fa-solid fa-bolt"></i></span>
+      <span class="logo-text">MediaPull</span>
+    </div>
+    <nav class="nav-pills">
+      <span class="pill active">Downloader</span>
+      <span class="pill" id="historyBtn">History</span>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main">
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        Supports 1000+ platforms
+      </div>
+      <h1 class="hero-title">
+        Download Any<br />
+        <span class="gradient-text">Video or Audio</span>
+      </h1>
+      <p class="hero-subtitle">
+        Paste a URL from YouTube, TikTok, Twitter, Instagram, Vimeo or any direct file link — pick your quality and download instantly.
+      </p>
+    </section>
+
+    <!-- URL Input Card -->
+    <div class="card url-card">
+      <div class="url-input-wrap">
+        <span class="url-icon"><i class="fa-solid fa-link"></i></span>
+        <input
+          type="url"
+          id="urlInput"
+          class="url-input"
+          placeholder="Paste video or audio URL here…"
+          autocomplete="off"
+          spellcheck="false"
+        />
+        <button id="pasteBtn" class="btn-icon" title="Paste from clipboard"><i class="fa-solid fa-clipboard"></i></button>
+        <button id="fetchBtn" class="btn-primary">
+          <span class="btn-text">Fetch</span>
+          <span class="btn-loader" hidden></span>
+        </button>
+      </div>
+
+      <!-- Supported platforms -->
+      <div class="platforms">
+        <span class="platform-label">Popular:</span>
+        <span class="platform-tag">YouTube</span>
+        <span class="platform-tag">TikTok</span>
+        <span class="platform-tag">Twitter</span>
+        <span class="platform-tag">Instagram</span>
+        <span class="platform-tag">Vimeo</span>
+        <span class="platform-tag">+ 1000 more</span>
+      </div>
+    </div>
+
+    <!-- Media Info Card (hidden until fetched) -->
+    <div class="card media-card" id="mediaCard" hidden>
+      <div class="media-info">
+        <div class="media-thumb-wrap">
+          <img id="mediaThumbnail" class="media-thumb" src="" alt="Thumbnail" />
+          <div class="media-thumb-placeholder" id="thumbPlaceholder"><i class="fa-solid fa-clapperboard"></i></div>
+          <span class="media-duration" id="mediaDuration"></span>
+        </div>
+        <div class="media-details">
+          <p class="media-uploader" id="mediaUploader"></p>
+          <h2 class="media-title" id="mediaTitle"></h2>
+        </div>
+      </div>
+
+      <!-- Format selector -->
+      <div class="format-section">
+        <div class="format-tabs" role="tablist">
+          <button class="format-tab active" id="tabVideo" role="tab" aria-selected="true" data-tab="video">
+            <i class="fa-solid fa-film"></i> Video
+          </button>
+          <button class="format-tab" id="tabAudio" role="tab" aria-selected="false" data-tab="audio">
+            <i class="fa-solid fa-music"></i> Audio
+          </button>
+        </div>
+
+        <!-- Video qualities -->
+        <div class="quality-grid" id="videoQualities">
+          <label class="quality-card" id="q1080">
+            <input type="radio" name="quality" value="video_1080" />
+            <div class="quality-icon"><i class="fa-solid fa-video"></i></div>
+            <div class="quality-info">
+              <span class="quality-label">1080p</span>
+              <span class="quality-sub">Full HD · MP4</span>
+            </div>
+            <span class="quality-badge">Best</span>
+          </label>
+          <label class="quality-card" id="q720">
+            <input type="radio" name="quality" value="video_720" checked />
+            <div class="quality-icon"><i class="fa-solid fa-tv"></i></div>
+            <div class="quality-info">
+              <span class="quality-label">720p</span>
+              <span class="quality-sub">HD · MP4</span>
+            </div>
+          </label>
+          <label class="quality-card" id="q480">
+            <input type="radio" name="quality" value="video_480" />
+            <div class="quality-icon"><i class="fa-solid fa-mobile-screen"></i></div>
+            <div class="quality-info">
+              <span class="quality-label">480p</span>
+              <span class="quality-sub">SD · MP4</span>
+            </div>
+          </label>
+          <label class="quality-card" id="q360">
+            <input type="radio" name="quality" value="video_360" />
+            <div class="quality-icon"><i class="fa-solid fa-globe"></i></div>
+            <div class="quality-info">
+              <span class="quality-label">360p</span>
+              <span class="quality-sub">Low · MP4</span>
+            </div>
+          </label>
+        </div>
+
+        <!-- Audio qualities -->
+        <div class="quality-grid" id="audioQualities" hidden>
+          <label class="quality-card">
+            <input type="radio" name="quality" value="audio_mp3_320" />
+            <div class="quality-icon"><i class="fa-solid fa-volume-high"></i></div>
+            <div class="quality-info">
+              <span class="quality-label">MP3 320kbps</span>
+              <span class="quality-sub">High Quality</span>
+            </div>
+            <span class="quality-badge">Best</span>
+          </label>
+          <label class="quality-card">
+            <input type="radio" name="quality" value="audio_mp3_192" checked />
+            <div class="quality-icon"><i class="fa-solid fa-music"></i></div>
+            <div class="quality-info">
+              <span class="quality-label">MP3 192kbps</span>
+              <span class="quality-sub">Standard</span>
+            </div>
+          </label>
+          <label class="quality-card">
+            <input type="radio" name="quality" value="audio_mp3_128" />
+            <div class="quality-icon"><i class="fa-solid fa-headphones"></i></div>
+            <div class="quality-info">
+              <span class="quality-label">MP3 128kbps</span>
+              <span class="quality-sub">Compact</span>
+            </div>
+          </label>
+          <label class="quality-card">
+            <input type="radio" name="quality" value="audio_wav" />
+            <div class="quality-icon"><i class="fa-solid fa-wave-square"></i></div>
+            <div class="quality-info">
+              <span class="quality-label">WAV</span>
+              <span class="quality-sub">Lossless</span>
+            </div>
+          </label>
+          <label class="quality-card">
+            <input type="radio" name="quality" value="audio_m4a" />
+            <div class="quality-icon"><i class="fa-solid fa-microphone"></i></div>
+            <div class="quality-info">
+              <span class="quality-label">M4A (AAC)</span>
+              <span class="quality-sub">Apple Format</span>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Download button -->
+      <button class="btn-download" id="downloadBtn">
+        <span class="download-icon"><i class="fa-solid fa-download"></i></span>
+        <span id="downloadBtnText">Download</span>
+      </button>
+    </div>
+
+    <!-- Progress Card -->
+    <div class="card progress-card" id="progressCard" hidden>
+      <div class="progress-header">
+        <div class="progress-status-icon" id="progressIcon"><i class="fa-solid fa-hourglass-half"></i></div>
+        <div>
+          <p class="progress-title" id="progressTitle">Preparing download…</p>
+          <p class="progress-subtitle" id="progressSubtitle"></p>
+        </div>
+      </div>
+
+      <div class="progress-bar-wrap">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+        </div>
+        <span class="progress-percent" id="progressPercent">0%</span>
+      </div>
+
+      <div class="progress-stats" id="progressStats" hidden>
+        <span class="stat"><span class="stat-label">Speed</span><span class="stat-val" id="statSpeed">—</span></span>
+        <span class="stat"><span class="stat-label">Size</span><span class="stat-val" id="statSize">—</span></span>
+        <span class="stat"><span class="stat-label">ETA</span><span class="stat-val" id="statEta">—</span></span>
+      </div>
+    </div>
+
+    <!-- History panel -->
+    <div class="card history-card" id="historyCard" hidden>
+      <div class="history-header">
+        <h3>Download History</h3>
+        <button class="btn-clear" id="clearHistoryBtn">Clear All</button>
+      </div>
+      <ul class="history-list" id="historyList">
+        <li class="history-empty">No downloads yet</li>
+      </ul>
+    </div>
+
+  </main>
+
+  <!-- Toast container -->
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <footer class="footer">
+    <p>&copy; 2026 <strong>UdaySaiSetti</strong> &nbsp;·&nbsp; Built with <i class="fa-solid fa-heart" style="color:#e05c8b"></i> using yt-dlp &nbsp;·&nbsp; For personal use only &nbsp;·&nbsp; Respect copyright laws</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
