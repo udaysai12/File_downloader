@@ -14,11 +14,6 @@ if (process.platform === 'win32') {
   process.exit(0);
 }
 
-// Skip on Linux — nixpacks installs yt-dlp via pip on Railway
-if (process.platform === 'linux') {
-  console.log('Linux detected — yt-dlp installed via pip by nixpacks');
-  process.exit(0);
-}
 
 const binDir    = path.join(__dirname, '..', 'bin');
 const ytdlpDest = path.join(binDir, 'yt-dlp');
